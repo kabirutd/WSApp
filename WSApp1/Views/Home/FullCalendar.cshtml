@@ -1,0 +1,170 @@
+﻿<script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+<link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css" />
+
+<link href='https://unpkg.com/@@fullcalendar/core@4.3.1/main.min.css' rel='stylesheet' />
+
+
+
+
+<link href='https://unpkg.com/@@fullcalendar/daygrid@4.3.0/main.min.css' rel='stylesheet' />
+
+<link href='https://unpkg.com/@@fullcalendar/timegrid@4.3.0/main.min.css' rel='stylesheet' />
+
+
+
+
+<script src='https://unpkg.com/@@fullcalendar/core@4.3.1/main.min.js'></script>
+
+
+
+
+<script src='https://unpkg.com/@@fullcalendar/interaction@4.3.0/main.min.js'></script>
+
+<script src='https://unpkg.com/@@fullcalendar/daygrid@4.3.0/main.min.js'></script>
+
+<script src='https://unpkg.com/@@fullcalendar/timegrid@4.3.0/main.min.js'></script>
+
+<style>
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+        font-size: 14px;
+    }
+
+    #external-events {
+        position: fixed;
+        z-index: 2;
+        top: 20px;
+        left: 20px;
+        width: 150px;
+        padding: 0 10px;
+        border: 1px solid #ccc;
+        background: #eee;
+    }
+
+    .demo-topbar + #external-events { /* will get stripped out */
+        top: 60px;
+    }
+
+    #external-events .fc-event {
+        margin: 1em 0;
+        cursor: move;
+    }
+
+    #calendar-container {
+        position: relative;
+        z-index: 1;
+        margin-left: 200px;
+    }
+
+    #calendar {
+        max-width: 900px;
+        margin: 20px auto;
+    }
+</style>
+
+<div id='external-events'>
+    <p>
+        <strong>Draggable Events</strong>
+    </p>
+    <div class='fc-event'>My Event 1</div>
+    <div class='fc-event'>My Event 2</div>
+    <div class='fc-event'>My Event 3</div>
+    <div class='fc-event'>My Event 4</div>
+    <div class='fc-event'>My Event 5</div>
+    <p>
+        <input type='checkbox' id='drop-remove' />
+        <label for='drop-remove'>remove after drop</label>
+    </p>
+</div>
+
+<div id='calendar-container'>
+    <div id='calendar'></div>
+</div>
+
+<br />
+
+<div id='calendar-container'>
+    <div id='calendar2'></div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        alert('jamais');
+        $("#calendar").fullCalendar({
+            // put your options and callbacks here
+            plugins: ['interaction', 'dayGrid', 'timeGrid'],
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,basicWeek,basicDay'
+            },
+            editable: true,
+            timezone: "UTC",
+            droppable: true, // this allows things to be dropped onto the calendar
+
+
+
+
+        })
+    });
+
+
+
+</script>
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var Calendar = FullCalendar.Calendar;
+        var Draggable = FullCalendarInteraction.Draggable;
+
+        var containerEl = document.getElementById('external-events');
+        var calendarEl = document.getElementById('calendar2');
+        var checkbox = document.getElementById('drop-remove');
+
+        // initialize the external events
+        // -----------------------------------------------------------------
+
+        new Draggable(containerEl, {
+            itemSelector: '.fc-event',
+            eventData: function (eventEl) {
+                return {
+                    title: eventEl.innerText
+                };
+            }
+        });
+
+        // initialize the calendar
+        // -----------------------------------------------------------------
+
+        var calendar = new Calendar(calendarEl, {
+            plugins: ['interaction', 'dayGrid', 'timeGrid'],
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            editable: true,
+            droppable: true, // this allows things to be dropped onto the calendar
+            drop: function (info) {
+                // is the "remove after drop" checkbox checked?
+                if (checkbox.checked) {
+                    // if so, remove the element from the "Draggable Events" list
+                    info.draggedEl.parentNode.removeChild(info.draggedEl);
+                }
+            }
+        });
+
+        calendar.render();
+    });
+
+</script>
