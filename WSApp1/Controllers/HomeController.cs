@@ -18,6 +18,13 @@ namespace WSApp1.Controllers
             _logger = logger;
         }
 
+        
+
+        public IActionResult ManageWorkoutOfTheDay()
+        {
+            return View();
+        }
+
         public IActionResult FullCalendar()
         {
             return View();
